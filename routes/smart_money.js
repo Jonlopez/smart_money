@@ -20,10 +20,10 @@ smartMoneyRouter.use((req, res, next) => {
 smartMoneyRouter.get('', (req, res) => {
     console.log(path.join(__dirname, 'public'));
     console.log(parentDir);
-    return res.sendFile(path.join(parentDir, 'public', 'views', 'home.html'));
+    return res.sendFile(path.join(parentDir, 'views', 'home.html'));
 });
 
-import fs from 'fs';
+/*import fs from 'fs';
 
 const cssPath = path.join(parentDir, 'public', 'css', 'styles.css');
 
@@ -33,6 +33,6 @@ fs.access(cssPath, fs.constants.R_OK, (err) => {
     } else {
         console.log('El archivo es accesible.');
     }
-});
+});*/
 
 export default smartMoneyRouter;

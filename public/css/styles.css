@@ -1,14 +1,31 @@
-body {
+/**{
+    outline: 1px solid red;
+}*/
+body{
+    background-color: black;
+    color: white;
+    font-size: 1;
+}
+header, footer, nav{
+    text-align: center;
+}
+main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #e3f2fd;
+    height: 80vh; /* Altura completa de la ventana */
+    margin: 0; /* Elimina márgenes predeterminados */
+    background-color: #f5f5f5; /* Col*/
 }
 
-p {
-    font-size: 24px;
-    color: #1e88e5;
-}
+main section#entrada {
+    width: 80%; /* Ancho opcional */
+    height: 200px; /* Altura opcional */
+    background-color: #4caf50; /* Color de fondo del bloque */
+    color: white; /* Color de texto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Asegura que el texto dentro esté centrado */
+    border-radius: 8px; /* Bordes redondeados opcionales */
+  }
