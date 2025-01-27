@@ -20,8 +20,21 @@ smartMoneyRouter.use((req, res, next) => {
 smartMoneyRouter.get('', (req, res) => {
     console.log(path.join(__dirname, 'public'));
     console.log(parentDir);
-    return res.sendFile(path.join(parentDir, 'views', 'home.html'));
+    return res.sendFile(path.join(parentDir, 'views', 'index.html'));
 });
+
+smartMoneyRouter.get('/buttons', (req, res) => {
+    console.log(path.join(__dirname, 'public'));
+    console.log(parentDir);
+    return res.sendFile(path.join(parentDir, 'views', 'buttons.html'));
+});
+
+smartMoneyRouter.get('/cards', (req, res) => {
+    console.log(path.join(__dirname, 'public'));
+    console.log(parentDir);
+    return res.sendFile(path.join(parentDir, 'views', 'cards.html'));
+});
+
 
 /*import fs from 'fs';
 
