@@ -1,51 +1,154 @@
 // libreria de express
 import express from 'express';
 import { Router } from "express";
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const expressApp = express();
 const smartMoneyRouter = Router();
-
-// Obtén __dirname usando import.meta.url
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const parentDir = path.join(__dirname, '..');
 
 smartMoneyRouter.use((req, res, next) => {
     console.log(req.ip);
     next();
 });
 
+// Agregar configuración de EJS
+expressApp.set('view engine', 'ejs');
+
+const datos = {
+    titulo: "Smart Money",
+    version: "1.0"
+};
+
 smartMoneyRouter.get('', (req, res) => {
-    console.log(path.join(__dirname, 'public'));
-    console.log(parentDir);
-    return res.sendFile(path.join(parentDir, 'views', 'index.html'));
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Dashboard",
+        contenido: "../dashboard2", 
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
 });
 
 smartMoneyRouter.get('/buttons', (req, res) => {
-    console.log(path.join(__dirname, 'public'));
-    console.log(parentDir);
-    return res.sendFile(path.join(parentDir, 'views', 'buttons.html'));
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Buttons Jon",
+        contenido: "../buttons", 
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
 });
 
 smartMoneyRouter.get('/cards', (req, res) => {
-    console.log(path.join(__dirname, 'public'));
-    console.log(parentDir);
-    return res.sendFile(path.join(parentDir, 'views', 'cards.html'));
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Cards",
+        contenido: "../cards", 
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
+});
+
+smartMoneyRouter.get('/utilities-animation', (req, res) => {
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Utilisties Animation",
+        contenido: "../utilities-animation", 
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
+});
+
+smartMoneyRouter.get('/utilities-border', (req, res) => {
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Utilisties Border",  
+        contenido: "../utilities-border", 
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
+});
+
+smartMoneyRouter.get('/utilities-color', (req, res) => {
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Utilisties Color",   
+        contenido: "../utilities-color", 
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
+});
+
+smartMoneyRouter.get('/utilities-other', (req, res) => {
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Utilisties Other",   
+        contenido: "../utilities-other", 
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
 });
 
 
-/*import fs from 'fs';
+smartMoneyRouter.get('/charts', (req, res) => {
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Charts",
+        contenido: "../charts", 
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
+});
 
-const cssPath = path.join(parentDir, 'public', 'css', 'styles.css');
+smartMoneyRouter.get('/tables', (req, res) => {
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Tables",
+        contenido: "../tables", 
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
+});
 
-fs.access(cssPath, fs.constants.R_OK, (err) => {
-    if (err) {
-        console.error('No se puede acceder al archivo:', err.message);
-    } else {
-        console.log('El archivo es accesible.');
-    }
-});*/
+smartMoneyRouter.get('/blank', (req, res) => {
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - Blank Page",
+        contenido: "../blank",     
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
+}); 
+
+smartMoneyRouter.get('/404', (req, res) => {
+    // Ejemplo de datos que quieres pasar a la vista
+    const vista = {
+        global: datos,
+        titulo: datos.titulo + " - 404",
+        contenido: "../404",     
+    };
+    
+    // En lugar de sendFile, usar render
+    return res.render('templates/index', vista);
+}); 
 
 export default smartMoneyRouter;
