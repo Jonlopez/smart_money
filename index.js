@@ -8,6 +8,9 @@ import { fileURLToPath } from 'url';
 import smartMoneyRouter from './routes/smart_money.js';
 import appRouter from './routes/app.js';
 import Constantes from './utils/constantes.js';
+import i18n from './utils/i18n.js';
+import languageRouter from './routes/language.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -28,6 +31,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // 1. Primero las configuraciones básicas de express
+expressApp.use(cookieParser());
 expressApp.use(express.json());
 expressApp.use(express.text());
 expressApp.use(express.static(path.join(__dirname, 'public')));
@@ -39,12 +43,16 @@ expressApp.set('views', './views');
 // 3. Middleware para Constantes (ANTES de las rutas)
 expressApp.use((req, res, next) => {
     res.locals.Constantes = Constantes;
+    const userLocale = req.cookies.locale || req.acceptsLanguages(['es', 'en', 'ca']) || 'es';
+    res.locals.i18n = i18n;
+    res.locals.currentLocale = userLocale;
     next();
 });
 
 // 4. Rutas (DESPUÉS del middleware)
 expressApp.use(process.env.PATH_P, smartMoneyRouter);
 expressApp.use(process.env.PATH_APP, appRouter);
+expressApp.use('/', languageRouter);
 
 expressApp.listen(PORT, 
     () => console.log(`Servidor levantado en el puerto: ${PORT}`))

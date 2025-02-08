@@ -1,0 +1,19 @@
+{
+    "sidebar": {
+      "dashboard": "Panel de Control",
+      "configuration": "Configuración",
+      "utilities": "Utilidades",
+      "charts": "Gráficos",
+      "tables": "Tablas",
+      "components": {
+        "title": "Componentes",
+        "buttons": "Botones",
+        "cards": "Tarjetas"
+      }
+    },
+    "language": {
+      "select": "Seleccionar idioma",
+      "spanish": "Español",
+      "english": "Inglés"
+    }
+  }

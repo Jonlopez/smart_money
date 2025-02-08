@@ -1,0 +1,19 @@
+{
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "configuration": "Settings",
+      "utilities": "Utilities",
+      "charts": "Charts",
+      "tables": "Tables",
+      "components": {
+        "title": "Components",
+        "buttons": "Buttons",
+        "cards": "Cards"
+      }
+    },
+    "language": {
+      "select": "Select language",
+      "spanish": "Spanish",
+      "english": "English"
+    }
+  }
