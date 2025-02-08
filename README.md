@@ -1,4 +1,14 @@
 # Smart Money 1.0
-Smart Money: Análisis de la pasta que entra y sale
+Smart Money: Análisis financiero.
 
-Un proyecto que nace de la necesidad de saber por donde se fuga el dinero y tapar ese agujero.
+El proyecto tiene como objetivo analizar los ingresos y gastos de una persona a lo largo de su vida financiera.
+
+Tecnologías a utilizar:
+
+- Servidor: NodeJS con Express.
+- Base de datos: MongoDB.
+- Motor de vistas: EJS.
+
+# Plantilla bootstrap SB Admin 2 (Gratuita)
+
+https://startbootstrap.com/theme/sb-admin-2
