@@ -1,7 +1,8 @@
 <div id="wrapper">
             
     <!-- Sidebar -->
-    <%- include('./sidebar') %>
+    <%- include('./'+ ((process.env.MODO_DEMO === 'true')?'demo/':'') +'sidebar') %>
+
     <!-- End of Sidebar -->
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -10,7 +11,7 @@
         <div id="content">
 
             <!-- Topbar -->
-            <%- include('./topbar') %>
+            <%- include('./'+ ((process.env.MODO_DEMO === 'true')?'demo/':'') +'topbar') %>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
