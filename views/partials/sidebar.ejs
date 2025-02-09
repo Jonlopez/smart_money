@@ -14,7 +14,7 @@
     <li class="nav-item active">
         <a class="nav-link" href="./">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
+            <span><%= i18n.t('sidebar.dashboard') %></span></a>
     </li>
 
     <!-- Divider -->
@@ -22,7 +22,7 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Interface
+        <%= i18n.t('sidebar.workspace') %>
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
@@ -30,32 +30,12 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Components</span>
+            <span><%= i18n.t('sidebar.components.title') %></span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Components:</h6>
-                <a class="collapse-item" href="/smart_money/buttons">Buttons</a>
-                <a class="collapse-item" href="/smart_money/cards">Cards</a>
-            </div>
-        </div>
-    </li>
-
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Utilities</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-            data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="/smart_money/utilities-color">Colors</a>
-                <a class="collapse-item" href="/smart_money/utilities-border">Borders</a>
-                <a class="collapse-item" href="/smart_money/utilities-animation">Animations</a>
-                <a class="collapse-item" href="/smart_money/utilities-other">Other</a>
+                <h6 class="collapse-header">    <%= i18n.t('sidebar.components.title') %></h6>
+                <a class="collapse-item" href="/smart_money/data-entry"><%= i18n.t('sidebar.components.data-entry') %></a>
             </div>
         </div>
     </li>
@@ -65,42 +45,15 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Addons
+        <%= i18n.t('sidebar.addons') %>
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-            aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Login Screens:</h6>
-                <a class="collapse-item" href="/app/login">Login</a>
-                <a class="collapse-item" href="/app/register">Register</a>
-                <a class="collapse-item" href="/app/forgot-password">Forgot Password</a>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Other Pages:</h6>
-                <a class="collapse-item" href="/smart_money/404">404 Page</a>
-                <a class="collapse-item" href="/smart_money/blank">Blank Page</a>
-            </div>
-        </div>
-    </li>
-
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="/smart_money/charts">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
-    </li>
-
+   
     <!-- Nav Item - Tables -->
     <li class="nav-item">
         <a class="nav-link" href="/smart_money/tables">
             <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
+            <span><%= i18n.t('sidebar.tables') %></span></a>
     </li>
 
     <!-- Divider -->
@@ -110,12 +63,5 @@
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
-
-    <!-- Sidebar Message -->
-    <!--<div class="sidebar-card d-none d-lg-flex">
-        <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
-        <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-        <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-    </div>-->
 
 </ul>

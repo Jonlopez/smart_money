@@ -15,7 +15,12 @@ expressApp.set('view engine', 'ejs');
 
 const datos = {
     titulo: "Smart Money",
-    version: "1.0"
+    version: "1.0",
+    usuario: {
+        nombre: "Jon McClain",
+        email: "jon.mcclain@gmail.com",
+        imagen: "/img/undraw_profile.svg"
+    }
 };
 
 smartMoneyRouter.get('', (req, res) => {
@@ -23,92 +28,19 @@ smartMoneyRouter.get('', (req, res) => {
     const vista = {
         global: datos,
         titulo: datos.titulo + " - Dashboard",
-        contenido: "../dashboard2", 
+        contenido: "../dashboard", 
     };
     
     // En lugar de sendFile, usar render
     return res.render('templates/index', vista);
 });
 
-smartMoneyRouter.get('/buttons', (req, res) => {
+smartMoneyRouter.get('/data-entry', (req, res) => {
     // Ejemplo de datos que quieres pasar a la vista
     const vista = {
         global: datos,
-        titulo: datos.titulo + " - Buttons Jon",
-        contenido: "../buttons", 
-    };
-    
-    // En lugar de sendFile, usar render
-    return res.render('templates/index', vista);
-});
-
-smartMoneyRouter.get('/cards', (req, res) => {
-    // Ejemplo de datos que quieres pasar a la vista
-    const vista = {
-        global: datos,
-        titulo: datos.titulo + " - Cards",
-        contenido: "../cards", 
-    };
-    
-    // En lugar de sendFile, usar render
-    return res.render('templates/index', vista);
-});
-
-smartMoneyRouter.get('/utilities-animation', (req, res) => {
-    // Ejemplo de datos que quieres pasar a la vista
-    const vista = {
-        global: datos,
-        titulo: datos.titulo + " - Utilisties Animation",
-        contenido: "../utilities-animation", 
-    };
-    
-    // En lugar de sendFile, usar render
-    return res.render('templates/index', vista);
-});
-
-smartMoneyRouter.get('/utilities-border', (req, res) => {
-    // Ejemplo de datos que quieres pasar a la vista
-    const vista = {
-        global: datos,
-        titulo: datos.titulo + " - Utilisties Border",  
-        contenido: "../utilities-border", 
-    };
-    
-    // En lugar de sendFile, usar render
-    return res.render('templates/index', vista);
-});
-
-smartMoneyRouter.get('/utilities-color', (req, res) => {
-    // Ejemplo de datos que quieres pasar a la vista
-    const vista = {
-        global: datos,
-        titulo: datos.titulo + " - Utilisties Color",   
-        contenido: "../utilities-color", 
-    };
-    
-    // En lugar de sendFile, usar render
-    return res.render('templates/index', vista);
-});
-
-smartMoneyRouter.get('/utilities-other', (req, res) => {
-    // Ejemplo de datos que quieres pasar a la vista
-    const vista = {
-        global: datos,
-        titulo: datos.titulo + " - Utilisties Other",   
-        contenido: "../utilities-other", 
-    };
-    
-    // En lugar de sendFile, usar render
-    return res.render('templates/index', vista);
-});
-
-
-smartMoneyRouter.get('/charts', (req, res) => {
-    // Ejemplo de datos que quieres pasar a la vista
-    const vista = {
-        global: datos,
-        titulo: datos.titulo + " - Charts",
-        contenido: "../charts", 
+        titulo: datos.titulo + " - Data Entry",
+        contenido: "../data-entry", 
     };
     
     // En lugar de sendFile, usar render
@@ -119,25 +51,13 @@ smartMoneyRouter.get('/tables', (req, res) => {
     // Ejemplo de datos que quieres pasar a la vista
     const vista = {
         global: datos,
-        titulo: datos.titulo + " - Tables",
-        contenido: "../tables", 
+        titulo: datos.titulo + " - Tablas",
+        contenido: "../tablas", 
     };
     
     // En lugar de sendFile, usar render
     return res.render('templates/index', vista);
 });
-
-smartMoneyRouter.get('/blank', (req, res) => {
-    // Ejemplo de datos que quieres pasar a la vista
-    const vista = {
-        global: datos,
-        titulo: datos.titulo + " - Blank Page",
-        contenido: "../blank",     
-    };
-    
-    // En lugar de sendFile, usar render
-    return res.render('templates/index', vista);
-}); 
 
 smartMoneyRouter.get('/404', (req, res) => {
     // Ejemplo de datos que quieres pasar a la vista

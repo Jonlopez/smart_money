@@ -1,0 +1,37 @@
+{
+    "sidebar": {
+      "dashboard": "Panel de Control",
+      "configuration": "Configuración",
+      "utilities": "Utilidades",
+      "charts": "Gráficos",
+      "tables": "Tablas",
+      "components": {
+        "title": "Componentes",
+        "buttons": "Botones",
+        "cards": "Tarjetas",
+        "data-entry": "Entrada de datos"  
+      },
+      "addons": "Complementos",
+      "workspace": "Espacio de trabajo"
+    },
+    "language": {
+      "select": "Seleccionar idioma",
+      "spanish": "Español",
+      "english": "Inglés"
+    },
+    "topbar": {
+      "profile": "Perfil",
+      "settings": "Configuración",
+      "logout": "Cerrar sesión",
+      "search-for": "Buscar..."
+    },
+    "dashboard": {
+      "title": "Panel de Control"
+    },
+    "data-entry": {
+      "title": "Entrada de datos"
+    },
+    "tables": {
+      "title": "Tablas"
+    }
+  }

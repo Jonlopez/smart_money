@@ -1,0 +1,37 @@
+{
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "configuration": "Settings",
+      "utilities": "Utilities",
+      "charts": "Charts",
+      "tables": "Tables",
+      "components": {
+        "title": "Components",
+        "buttons": "Buttons",
+        "cards": "Cards",
+        "data-entry": "Data Entry"  
+      },
+      "addons": "Addons",
+      "workspace": "Workspace"
+    },
+    "language": {
+      "select": "Select language",
+      "spanish": "Spanish",
+      "english": "English"
+    },
+    "topbar": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout",
+      "search-for": "Search for..."
+    },
+    "dashboard": {
+      "title": "Dashboard"
+    },
+    "data-entry": {
+      "title": "Data Entry"
+    },
+    "tables": {
+      "title": "Tables"
+    }
+  }
