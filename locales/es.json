@@ -17,7 +17,8 @@
     "language": {
       "select": "Seleccionar idioma",
       "spanish": "Español",
-      "english": "Inglés"
+      "english": "Inglés",
+      "basque": "Euskera"
     },
     "topbar": {
       "profile": "Perfil",
@@ -29,7 +30,30 @@
       "title": "Panel de Control"
     },
     "data-entry": {
-      "title": "Entrada de datos"
+      "title": "Entrada de Datos",
+      "form_title": "Subida de Archivos",
+      "select_files": "Seleccionar archivos",
+      "choose_files": "Elegir archivos...",
+      "description": "Descripción",
+      "upload": "Subir Archivos",
+      "files_selected": "archivos seleccionados",
+      "no_files": "No hay archivos seleccionados. Seleccione archivos para comenzar.",
+      "file_size": "Tamaño",
+      "remove_file": "Eliminar archivo",
+      "uploading": "Subiendo",
+      "upload_success": "Archivos subidos correctamente",
+      "upload_error": "Error al subir los archivos. Por favor, inténtelo de nuevo",
+      "result": "Resultado del procesamiento",
+      "success": "Éxito",
+      "message": "Mensaje",
+      "file": "Archivo",
+      "sheet": "Hoja",
+      "rows": "Filas",
+      "columns": "Columnas",
+      "headers": "Encabezados",
+      "error": "Error",
+      "key_value_pairs": "Pares Clave-Valor",
+      "row": "Fila"
     },
     "tables": {
       "title": "Tablas"

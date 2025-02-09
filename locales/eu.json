@@ -1,0 +1,61 @@
+{
+    "sidebar": {
+      "dashboard": "Kontrol Panela",
+      "configuration": "Konfigurazioa",
+      "utilities": "Tresnak",
+      "charts": "Grafikoak",
+      "tables": "Taulak",
+      "components": {
+        "title": "Osagaiak",
+        "buttons": "Botoiak",
+        "cards": "Txartelak",
+        "data-entry": "Datu Sarrera"  
+      },
+      "addons": "Gehigarriak",
+      "workspace": "Lan Eremua"
+    },
+    "language": {
+      "select": "Hautatu hizkuntza",
+      "spanish": "Gaztelania",
+      "english": "Ingelesa",
+      "basque": "Euskera"
+    },
+    "topbar": {
+      "profile": "Profila",
+      "settings": "Ezarpenak",
+      "logout": "Saioa Itxi",
+      "search-for": "Bilatu..."
+    },
+    "dashboard": {
+      "title": "Kontrol Panela"
+    },
+    "data-entry": {
+      "title": "Datu Sarrera",
+      "form_title": "Fitxategien Karga",
+      "select_files": "Hautatu fitxategiak",
+      "choose_files": "Aukeratu fitxategiak...",
+      "description": "Deskribapena",
+      "upload": "Fitxategiak Igo",
+      "files_selected": "fitxategi hautatuta",
+      "no_files": "Ez dago fitxategirik hautatuta. Hautatu fitxategiak hasteko.",
+      "file_size": "Tamaina",
+      "remove_file": "Fitxategia ezabatu",
+      "uploading": "Igotzen",
+      "upload_success": "Fitxategiak ongi igo dira",
+      "upload_error": "Errorea fitxategiak igotzean. Saiatu berriro",
+      "result": "Prozesatze Emaitza",
+      "success": "Arrakasta",
+      "message": "Mezua",
+      "file": "Fitxategia",
+      "sheet": "Orria",
+      "rows": "Errenkadak",
+      "columns": "Zutabeak",
+      "headers": "Goiburuak",
+      "error": "Errorea",
+      "key_value_pairs": "Gako-Balio Pareak",
+      "row": "Errenkada"
+    },
+    "tables": {
+      "title": "Taulak"
+    }
+  }

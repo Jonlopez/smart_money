@@ -17,7 +17,8 @@
     "language": {
       "select": "Select language",
       "spanish": "Spanish",
-      "english": "English"
+      "english": "English",
+      "basque": "Basque"
     },
     "topbar": {
       "profile": "Profile",
@@ -29,7 +30,30 @@
       "title": "Dashboard"
     },
     "data-entry": {
-      "title": "Data Entry"
+      "title": "Data Entry",
+      "form_title": "File Upload",
+      "select_files": "Select files",
+      "choose_files": "Choose files...",
+      "description": "Description",
+      "upload": "Upload Files",
+      "files_selected": "files selected",
+      "no_files": "No files selected. Select files to begin.",
+      "file_size": "Size",
+      "remove_file": "Remove file",
+      "uploading": "Uploading",
+      "upload_success": "Files uploaded successfully",
+      "upload_error": "Error uploading files. Please try again",
+      "result": "Processing Result",
+      "success": "Success",
+      "message": "Message",
+      "file": "File",
+      "sheet": "Sheet",
+      "rows": "Rows",
+      "columns": "Columns",
+      "headers": "Headers",
+      "error": "Error",
+      "key_value_pairs": "Key-Value Pairs",
+      "row": "Row"
     },
     "tables": {
       "title": "Tables"

@@ -13,4 +13,13 @@
 
     <!-- Custom styles for this template-->
     <link href="<%= Constantes.CSS_PATH.ADMIN_TEMPLATE %>" rel="stylesheet">
+
+<script>
+    window.i18n = {
+        translations: <%- JSON.stringify(i18n.translations[i18n.currentLocale]) %>,
+        t: function(key) {
+            return key.split('.').reduce((obj, i) => obj?.[i], this.translations) || key;
+        }
+    };
+</script>
 </head>
