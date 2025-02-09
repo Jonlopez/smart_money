@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import demoRouter from './routes/demo/demo.js';
 import appDemoRouter from './routes/demo/app_demo.js';
 import smartMoneyRouter from './routes/smart_money.js';
+import dataEntryRouter from './routes/data-entry.js';
 import appRouter from './routes/app.js';
 import Constantes from './utils/constantes.js';
 import i18n from './utils/i18n.js';
@@ -56,6 +57,7 @@ expressApp.use((req, res, next) => {
 expressApp.use(process.env.PATH_DEMO, demoRouter);
 expressApp.use(process.env.PATH_DEMO_APP, appDemoRouter);
 expressApp.use(process.env.PATH_P, smartMoneyRouter);
+expressApp.use(process.env.PATH_P, dataEntryRouter);
 expressApp.use(process.env.PATH_APP, appRouter);
 expressApp.use('/', languageRouter);
 
