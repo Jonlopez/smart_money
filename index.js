@@ -5,6 +5,8 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import demoRouter from './routes/demo/demo.js';
+import appDemoRouter from './routes/demo/app_demo.js';
 import smartMoneyRouter from './routes/smart_money.js';
 import appRouter from './routes/app.js';
 import Constantes from './utils/constantes.js';
@@ -17,9 +19,10 @@ dotenv.config();
 // Verificación de variables de entorno
 console.log('Variables de entorno cargadas:', {
     PORT: process.env.PORT,
+    PATH_DEMO: process.env.PATH_DEMO,
+    PATH_DEMO_APP: process.env.PATH_DEMO_APP,
     PATH_P: process.env.PATH_P,
     PATH_APP: process.env.PATH_APP,
-    MODO_DEMO: process.env.MODO_DEMO,
     ENTORNO: process.env.ENTORNO,
 });
 
@@ -50,6 +53,8 @@ expressApp.use((req, res, next) => {
 });
 
 // 4. Rutas (DESPUÉS del middleware)
+expressApp.use(process.env.PATH_DEMO, demoRouter);
+expressApp.use(process.env.PATH_DEMO_APP, appDemoRouter);
 expressApp.use(process.env.PATH_P, smartMoneyRouter);
 expressApp.use(process.env.PATH_APP, appRouter);
 expressApp.use('/', languageRouter);
