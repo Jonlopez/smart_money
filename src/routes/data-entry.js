@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import * as XLSX from 'xlsx';
 import path from 'path';
+import Movimiento from '../models/movimiento.js';
 
 const router = express.Router();
 
@@ -9,99 +10,134 @@ const router = express.Router();
 const upload = multer({
     storage: multer.memoryStorage(),
     fileFilter: (req, file, cb) => {
-        const allowedTypes = [
-            'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'application/octet-stream'
-        ];
         const allowedExtensions = ['.xls', '.xlsx'];
         const ext = path.extname(file.originalname).toLowerCase();
-        
-        if (allowedTypes.includes(file.mimetype) && allowedExtensions.includes(ext)) {
+        if (allowedExtensions.includes(ext)) {
             cb(null, true);
         } else {
-            cb(new Error('Formato de archivo no válido. Solo se permiten archivos Excel (.xls, .xlsx)'));
+            cb(new Error('Solo se permiten archivos Excel (.xls, .xlsx)'));
         }
     }
 });
 
-router.post('/upload', upload.array('files'), async (req, res) => {
+router.post('/upload', upload.single('file'), async (req, res) => {
     try {
-        if (!req.files || req.files.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: 'No se han recibido archivos'
-            });
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: 'No se ha recibido ningún archivo' });
         }
 
-        const processedFiles = [];
+        const workbook = XLSX.read(req.file.buffer, { type: 'buffer' });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const range = XLSX.utils.decode_range(worksheet['!ref']);
+        const rows = XLSX.utils.sheet_to_json(worksheet, {
+            header: 'A',
+            range: range.s.r,
+            raw: false,
+            defval: ''
+        });
 
-        for (const file of req.files) {
+        let insertados = 0;
+        let duplicados = 0;
+        let errores = 0;
+        const erroresDetalle = [];
+        const duplicadosDetalle = [];
+
+        const dataRows = rows.slice(1);
+
+        for (const [index, row] of dataRows.entries()) {
             try {
-                // Leer el archivo Excel
-                const workbook = XLSX.read(file.buffer, { type: 'buffer' });
-                
-                // Procesar cada hoja del archivo
-                const fileData = {
-                    fileName: file.originalname,
-                    sheets: []
+                const movimiento = {
+                    fecha: formatDate(row['A']),
+                    concepto: String(row['B'] || '').trim(),
+                    fecha_valor: formatDate(row['C']),
+                    importe: parseFloat(String(row['D'] || '0').replace(',', '.')),
+                    saldo: parseFloat(String(row['E'] || '0').replace(',', '.'))
                 };
 
-                workbook.SheetNames.forEach(sheetName => {
-                    const sheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet, { 
-                        raw: false,
-                        dateNF: 'yyyy-mm-dd'
+                // Validar datos
+                if (!movimiento.fecha || !movimiento.concepto || !movimiento.fecha_valor || 
+                    isNaN(movimiento.importe) || isNaN(movimiento.saldo)) {
+                    errores++;
+                    erroresDetalle.push({
+                        fila: index + 2, // +2 porque index empieza en 0 y saltamos la fila de headers
+                        datos: row,
+                        motivo: 'Datos incompletos o inválidos'
                     });
+                    continue;
+                }
 
-                    // Extraer metadatos y datos de la hoja
-                    const sheetData = {
-                        name: sheetName,
-                        rowCount: jsonData.length,
-                        columnCount: Object.keys(jsonData[0] || {}).length,
-                        headers: Object.keys(jsonData[0] || {}),
-                        data: jsonData, // Ahora cada fila es un objeto clave-valor
-                        keyValuePairs: [] // Nuevo array para pares clave-valor
-                    };
-
-                    // Convertir los datos a pares clave-valor
-                    jsonData.forEach((row, rowIndex) => {
-                        Object.entries(row).forEach(([key, value]) => {
-                            sheetData.keyValuePairs.push({
-                                key: `${key} (Row ${rowIndex + 1})`,
-                                value: value
-                            });
+                // Intentar insertar
+                try {
+                    await Movimiento.create(movimiento);
+                    insertados++;
+                } catch (error) {
+                    if (error.name === 'SequelizeUniqueConstraintError') {
+                        duplicados++;
+                        duplicadosDetalle.push({
+                            fila: index + 2,
+                            datos: movimiento
                         });
-                    });
-
-                    fileData.sheets.push(sheetData);
-                });
-
-                processedFiles.push(fileData);
-
+                    } else {
+                        errores++;
+                        erroresDetalle.push({
+                            fila: index + 2,
+                            datos: row,
+                            motivo: error.message
+                        });
+                    }
+                }
             } catch (error) {
-                console.error(`Error procesando archivo ${file.originalname}:`, error);
-                processedFiles.push({
-                    fileName: file.originalname,
-                    error: 'Error al procesar el archivo'
+                errores++;
+                erroresDetalle.push({
+                    fila: index + 2,
+                    datos: row,
+                    motivo: error.message
                 });
             }
         }
 
         res.json({
             success: true,
-            message: 'Archivos procesados correctamente',
-            description: req.body.description,
-            files: processedFiles
+            message: 'Archivo procesado',
+            resultados: {
+                total: dataRows.length,
+                insertados,
+                duplicados,
+                errores,
+                erroresDetalle,
+                duplicadosDetalle
+            }
         });
 
     } catch (error) {
-        console.error('Error en el procesamiento de archivos:', error);
+        console.error('Error procesando archivo:', error);
         res.status(500).json({
             success: false,
-            message: 'Error en el servidor al procesar los archivos'
+            message: 'Error al procesar el archivo',
+            error: error.message
         });
     }
 });
+
+// Función para formatear fechas de DD/MM/YYYY a YYYY-MM-DD
+function formatDate(dateStr) {
+    if (!dateStr) return null;
+    
+    // Limpiar la cadena de fecha
+    dateStr = String(dateStr).trim();
+    
+    // Si es una fecha en formato DD/MM/YYYY
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+        // Asegurarse de que el año tiene 4 dígitos
+        let year = parts[2];
+        if (year.length === 2) {
+            year = '20' + year;
+        }
+        return `${year}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+    }
+    
+    return null;
+}
 
 export default router;

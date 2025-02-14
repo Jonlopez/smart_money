@@ -1,208 +1,124 @@
-let selectedFiles = new DataTransfer();
-
-function updateFileList() {
-    const fileListContainer = document.getElementById('fileList');
-    const label = document.querySelector('.custom-file-label');
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('uploadForm');
+    const fileInput = document.getElementById('fileInput');
     const uploadButton = document.getElementById('uploadButton');
-    const files = Array.from(selectedFiles.files);
-    
-    // Activar/desactivar botón según haya archivos
-    uploadButton.disabled = files.length === 0;
-    uploadButton.classList.toggle('btn-primary', files.length > 0);
-    uploadButton.classList.toggle('btn-secondary', files.length === 0);
-    
-    if (files.length > 0) {
-        label.textContent = files.length + ' ' + i18n.t("data-entry.files_selected");
-        
-        let fileListHTML = '<ul class="list-group">';
-        files.forEach((file, index) => {
-            fileListHTML += `
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>
-                        <i class="fas fa-file mr-2 text-primary"></i>
-                        ${file.name}
-                    </span>
-                    <div>
-                        <span class="badge badge-primary badge-pill mr-2">${(file.size / 1024).toFixed(2)} KB</span>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeFile(${index})">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </li>`;
-        });
-        fileListHTML += '</ul>';
-        fileListContainer.innerHTML = fileListHTML;
-    } else {
-        label.textContent = i18n.t("data-entry.choose_files");
-        fileListContainer.innerHTML = `
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle mr-2"></i>
-                ${i18n.t("data-entry.no_files")}
-            </div>`;
-    }
+    const jsonResult = document.getElementById('jsonResult');
+    const fileLabel = document.querySelector('.custom-file-label');
 
-    // Actualizar el input file con los archivos seleccionados
-    document.getElementById('fileInput').files = selectedFiles.files;
-}
-
-function removeFile(index) {
-    const dt = new DataTransfer();
-    const files = Array.from(selectedFiles.files);
-    
-    files.forEach((file, i) => {
-        if (i !== index) {
-            dt.items.add(file);
-        }
-    });
-    
-    selectedFiles = dt;
-    updateFileList();
-}
-
-document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-    const newFiles = Array.from(this.files);
-    
-    // Agregar nuevos archivos a la colección existente
-    newFiles.forEach(file => {
-        // Verificar si el archivo ya existe
-        const exists = Array.from(selectedFiles.files).some(f => 
-            f.name === file.name && f.size === file.size
-        );
-        
-        if (!exists) {
-            selectedFiles.items.add(file);
-        }
-    });
-
-    updateFileList();
-});
-
-// Reemplazar el listener del submit por un listener del botón
-document.getElementById('uploadButton').addEventListener('click', async function() {
-    const formData = new FormData();
-    
-    // Agregar los archivos al FormData
-    Array.from(selectedFiles.files).forEach(file => {
-        formData.append('files', file);
-    });
-    
-    // Agregar la descripción
-    formData.append('description', document.getElementById('description').value);
-    
-    // Deshabilitar el botón durante la subida
-    const uploadButton = this;
-    const originalText = uploadButton.innerHTML;
-    uploadButton.disabled = true;
-    uploadButton.innerHTML = `
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        ${i18n.t('data-entry.uploading')}...
-    `;
-
-    try {
-        const response = await fetch('/smart_money/upload', {
-            method: 'POST',
-            body: formData
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        
-        // Limpiar el formulario después de una subida exitosa
-        selectedFiles = new DataTransfer();
-        document.getElementById('uploadForm').reset();
-        document.getElementById('description').value = '';
-        updateFileList();
-        
-        // Mostrar mensaje de éxito
-        const fileListContainer = document.getElementById('fileList');
-        fileListContainer.innerHTML = `
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle mr-2"></i>
-                ${i18n.t('data-entry.upload_success')}
-            </div>`;
-
-        // Formatear y mostrar el resultado JSON
-        const jsonResult = document.getElementById('jsonResult');
-        const formattedResult = formatJsonResult(result);
-        jsonResult.value = formattedResult;
-
-    } catch (error) {
-        console.error('Error:', error);
-        const fileListContainer = document.getElementById('fileList');
-        // Mostrar mensaje de error
-        fileListContainer.innerHTML = `
-            <div class="alert alert-danger">
-                <i class="fas fa-exclamation-circle mr-2"></i>
-                ${i18n.t('data-entry.upload_error')}
-            </div>`;
-    } finally {
-        // Restaurar el botón
-        uploadButton.disabled = false;
-        uploadButton.innerHTML = originalText;
-    }
-});
-
-// Función para formatear el resultado JSON
-function formatJsonResult(json) {
-    let output = '';
-    
-    // Información general
-    output += `${i18n.t('data-entry.success')}: ${json.success}\n`;
-    output += `${i18n.t('data-entry.message')}: ${json.message}\n`;
-    output += `${i18n.t('data-entry.description')}: ${json.description}\n\n`;
-    
-    // Información de archivos
-    json.files.forEach((file, fileIndex) => {
-        output += `${i18n.t('data-entry.file')} ${fileIndex + 1}: ${file.fileName}\n`;
-        
-        if (file.error) {
-            output += `  ${i18n.t('data-entry.error')}: ${file.error}\n`;
+    // Actualizar el nombre del archivo seleccionado
+    fileInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+            fileLabel.textContent = this.files[0].name;
+            uploadButton.disabled = false;
         } else {
-            file.sheets.forEach((sheet, sheetIndex) => {
-                output += `  ${i18n.t('data-entry.sheet')} ${sheetIndex + 1}: ${sheet.name}\n`;
-                output += `    ${i18n.t('data-entry.rows')}: ${sheet.rowCount}\n`;
-                output += `    ${i18n.t('data-entry.columns')}: ${sheet.columnCount}\n`;
-                output += `    ${i18n.t('data-entry.headers')}: ${sheet.headers.join(', ')}\n\n`;
-                
-                // Añadir los pares clave-valor agrupados por fila
-                output += `    ${i18n.t('data-entry.key_value_pairs')}:\n`;
-                let currentRow = 1;
-                let rowData = {};
-                
-                sheet.keyValuePairs.forEach(pair => {
-                    const rowMatch = pair.key.match(/Row (\d+)/);
-                    const rowNum = rowMatch ? parseInt(rowMatch[1]) : 0;
-                    const cleanKey = pair.key.replace(/ \(Row \d+\)/, '');
-                    
-                    if (rowNum !== currentRow && Object.keys(rowData).length > 0) {
-                        // Imprimir fila anterior
-                        output += `      --- ${i18n.t('data-entry.row')} ${currentRow} ---\n`;
-                        Object.entries(rowData).forEach(([k, v]) => {
-                            output += `      ${k}: ${v}\n`;
-                        });
-                        output += '\n';
-                        rowData = {};
-                        currentRow = rowNum;
-                    }
-                    
-                    rowData[cleanKey] = pair.value;
-                });
-                
-                // Imprimir última fila
-                if (Object.keys(rowData).length > 0) {
-                    output += `      --- ${i18n.t('data-entry.row')} ${currentRow} ---\n`;
-                    Object.entries(rowData).forEach(([k, v]) => {
-                        output += `      ${k}: ${v}\n`;
-                    });
-                    output += '\n';
-                }
-            });
+            fileLabel.textContent = 'Elegir archivo';
+            uploadButton.disabled = true;
         }
-        output += '\n';
     });
-    
-    return output;
-}
+
+    // Manejar el envío del formulario
+    uploadButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+        uploadButton.disabled = true;
+        const originalText = uploadButton.innerHTML;
+        uploadButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Procesando...
+        `;
+        
+        try {
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            
+            const response = await fetch('/smart_money/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            
+            // Formatear el resultado para mostrarlo en el textarea
+            const formattedResult = formatJsonResult(result);
+            jsonResult.value = formattedResult;
+
+            // Mostrar mensaje de éxito o error
+            if (result.success) {
+                showAlert('success', `Archivo procesado correctamente. 
+                    Registros insertados: ${result.resultados.insertados}, 
+                    Errores: ${result.resultados.errores}`);
+            } else {
+                showAlert('error', result.message);
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            showAlert('error', 'Error al procesar el archivo');
+            jsonResult.value = JSON.stringify({ error: error.message }, null, 2);
+        } finally {
+            uploadButton.disabled = false;
+            uploadButton.innerHTML = originalText;
+            fileInput.value = '';
+            fileLabel.textContent = 'Elegir archivo';
+        }
+    });
+
+    // Función para formatear el resultado JSON
+    function formatJsonResult(result) {
+        let output = '';
+        output += `Resultado del procesamiento:\n`;
+        output += `========================\n\n`;
+        output += `Estado: ${result.success ? 'Éxito' : 'Error'}\n`;
+        output += `Mensaje: ${result.message}\n\n`;
+        
+        if (result.resultados) {
+            output += `Resumen:\n`;
+            output += `--------\n`;
+            output += `Total de registros procesados: ${result.resultados.total}\n`;
+            output += `Registros insertados con éxito: ${result.resultados.insertados}\n`;
+            output += `Registros duplicados: ${result.resultados.duplicados}\n`;
+            output += `Registros con errores: ${result.resultados.errores}\n\n`;
+
+            // Mostrar detalles de duplicados si hay alguno
+            if (result.resultados.duplicados > 0 && result.resultados.duplicadosDetalle) {
+                output += `Detalle de registros duplicados:\n`;
+                output += `-----------------------------\n`;
+                result.resultados.duplicadosDetalle.forEach(dup => {
+                    output += `Fila ${dup.fila}: ${dup.datos.fecha} - ${dup.datos.concepto}\n`;
+                });
+                output += '\n';
+            }
+
+            // Mostrar detalles de errores si hay alguno
+            if (result.resultados.errores > 0 && result.resultados.erroresDetalle) {
+                output += `Detalle de errores:\n`;
+                output += `------------------\n`;
+                result.resultados.erroresDetalle.forEach(err => {
+                    output += `Fila ${err.fila}: ${err.motivo}\n`;
+                    output += `Datos: ${JSON.stringify(err.datos)}\n`;
+                    output += `---\n`;
+                });
+            }
+        }
+
+        return output;
+    }
+
+    // Función para mostrar alertas
+    function showAlert(type, message) {
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        `;
+        
+        form.insertAdjacentElement('beforebegin', alertDiv);
+        
+        // Eliminar la alerta después de 5 segundos
+        setTimeout(() => alertDiv.remove(), 5000);
+    }
+});
