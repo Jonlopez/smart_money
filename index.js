@@ -5,14 +5,14 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import demoRouter from './routes/demo/demo.js';
-import appDemoRouter from './routes/demo/app_demo.js';
-import smartMoneyRouter from './routes/smart_money.js';
-import dataEntryRouter from './routes/data-entry.js';
-import appRouter from './routes/app.js';
-import Constantes from './utils/constantes.js';
-import i18n from './utils/i18n.js';
-import languageRouter from './routes/language.js';
+import demoRouter from './src/routes/demo/demo.js';
+import appDemoRouter from './src/routes/demo/app_demo.js';
+import smartMoneyRouter from './src/routes/smart_money.js';
+import dataEntryRouter from './src/routes/data-entry.js';
+import appRouter from './src/routes/app.js';
+import Constantes from './src/utils/constantes.js';
+import i18n from './src/utils/i18n.js';
+import languageRouter from './src/routes/language.js';
 import cookieParser from 'cookie-parser';
 
 dotenv.config();
@@ -42,7 +42,7 @@ expressApp.use(express.static(path.join(__dirname, 'public')));
 
 // 2. Configuración de vistas
 expressApp.set('view engine', 'ejs');
-expressApp.set('views', './views');
+expressApp.set('views', './src/views');
 
 // 3. Middleware para Constantes (ANTES de las rutas)
 expressApp.use((req, res, next) => {

@@ -14,7 +14,7 @@ class I18n {
     }
 
     loadTranslations() {
-        const localesPath = path.join(__dirname, '../locales');
+        const localesPath = path.join(__dirname, '../../locales');
         try {
             fs.readdirSync(localesPath).forEach(file => {
                 const locale = file.replace('.json', '');
