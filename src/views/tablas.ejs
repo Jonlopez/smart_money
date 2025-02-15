@@ -1,8 +1,248 @@
+<style>
+    .sliders-container {
+        height: 40px;
+        padding: 0 10px;
+        position: relative;
+    }
+    
+    .custom-range {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 2px;
+        background: transparent;
+        outline: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .custom-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+        z-index: 10;
+        border: 2px solid white;
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    
+    /* Específico para el slider desde */
+    #importeDesde {
+        z-index: 3;
+    }
+    
+    #importeDesde::-webkit-slider-thumb {
+        background: #e74a3b;
+        animation: pulse 1.5s infinite;
+    }
+    
+    /* Específico para el slider hasta */
+    #importeHasta {
+        z-index: 2;
+    }
+    
+    #importeHasta::-webkit-slider-thumb {
+        background: #1cc88a;
+    }
+    
+    .slider-track {
+        width: 100%;
+        height: 5px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #e9ecef;
+        border-radius: 3px;
+        z-index: 1;
+    }
+    
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(231, 74, 59, 0.7),
+                        0 0 0 0 rgba(255, 255, 255, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(231, 74, 59, 0),
+                        0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(231, 74, 59, 0),
+                        0 0 0 0 rgba(255, 255, 255, 0);
+        }
+    }
+    
+    .custom-range::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 10px rgba(78, 115, 223, 0.5),
+                    0 0 0 2px white;
+    }
+    
+    .custom-range::-webkit-slider-thumb:active {
+        transform: scale(0.95);
+        box-shadow: 0 0 15px rgba(78, 115, 223, 0.7),
+                    0 0 0 2px white;
+    }
+    
+    /* Soporte para Firefox */
+    .custom-range::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border: 2px solid white;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    
+    #importeDesde::-moz-range-thumb {
+        background: #e74a3b;
+    }
+    
+    #importeHasta::-moz-range-thumb {
+        background: #1cc88a;
+    }
+    
+    .badge {
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .badge-primary {
+        background-color: #4e73df;
+    }
+    
+    .badge[contenteditable="true"] {
+        cursor: text;
+        outline: none;
+        min-width: 100px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .badge[contenteditable="true"]:hover {
+        background-color: #2e59d9;
+    }
+    
+    .badge[contenteditable="true"]:focus {
+        background-color: #224abe;
+        box-shadow: 0 0 0 0.2rem rgba(78,115,223,.25);
+    }
+</style>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><%= i18n.t('tables.title') %></h1>
 
+    <!-- Filtros -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
+        </div>
+        <div class="card-body">
+            <form id="filtroForm">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Fecha desde:</label>
+                            <input type="date" class="form-control" id="fechaDesde" name="fechaDesde">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Fecha hasta:</label>
+                            <input type="date" class="form-control" id="fechaHasta" name="fechaHasta">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Concepto:</label>
+                            <input type="text" class="form-control" id="concepto" name="concepto">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Rango de Importes:</label>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between">
+                                        <span id="importeDesdeValue" class="badge badge-primary p-2" 
+                                              contenteditable="true" 
+                                              data-slider="importeDesde">-10.000 €</span>
+                                        <span id="importeHastaValue" class="badge badge-primary p-2" 
+                                              contenteditable="true" 
+                                              data-slider="importeHasta">10.000 €</span>
+                                    </div>
+                                    <div class="sliders-container position-relative mt-2">
+                                        <div class="slider-track"></div>
+                                        <input type="range" class="custom-range position-absolute" 
+                                               id="importeDesde" name="importeDesde"
+                                               min="-10000" max="10000" step="100" value="-10000">
+                                        <input type="range" class="custom-range position-absolute" 
+                                               id="importeHasta" name="importeHasta"
+                                               min="-10000" max="10000" step="100" value="10000">
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <small class="text-muted">-10.000 €</small>
+                                        <small class="text-muted">0 €</small>
+                                        <small class="text-muted">10.000 €</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Tipo:</label>
+                            <select class="form-control" id="tipo" name="tipo">
+                                <option value="">Todos</option>
+                                <option value="gastos">Gastos</option>
+                                <option value="ingresos">Ingresos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mt-3">
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                        <button type="button" class="btn btn-secondary" id="limpiarFiltros">Limpiar Filtros</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de Movimientos -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Movimientos</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="tablaMovimientos" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Concepto</th>
+                            <th>Fecha Valor</th>
+                            <th>Importe</th>
+                            <th>Saldo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- /.container-fluid -->
+
+<script src="/js/tablas/tablas.js"></script>

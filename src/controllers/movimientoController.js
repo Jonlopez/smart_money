@@ -1,4 +1,5 @@
 import Movimiento from '../models/movimiento.js';
+import { Op } from 'sequelize';
 
 const movimientoController = {
     // Crear nuevo movimiento
@@ -119,6 +120,70 @@ const movimientoController = {
                 success: false,
                 error: error.message,
                 mensaje: 'Error al eliminar el movimiento'
+            });
+        }
+    },
+
+    // Filtrar movimientos
+    filtrar: async (req, res) => {
+        try {
+            const { fechaDesde, fechaHasta, concepto, importeDesde, importeHasta, tipo } = req.body;
+            
+            let whereClause = {};
+            
+            if (fechaDesde && fechaHasta) {
+                whereClause.fecha = {
+                    [Op.between]: [fechaDesde, fechaHasta]
+                };
+            } else if (fechaDesde) {
+                whereClause.fecha = {
+                    [Op.gte]: fechaDesde
+                };
+            } else if (fechaHasta) {
+                whereClause.fecha = {
+                    [Op.lte]: fechaHasta
+                };
+            }
+
+            if (concepto) {
+                whereClause.concepto = {
+                    [Op.like]: `%${concepto}%`
+                };
+            }
+
+            if (importeDesde || importeHasta) {
+                whereClause.importe = {};
+                if (importeDesde) {
+                    whereClause.importe[Op.gte] = importeDesde;
+                }
+                if (importeHasta) {
+                    whereClause.importe[Op.lte] = importeHasta;
+                }
+            }
+
+            if (tipo) {
+                whereClause.importe = tipo === 'gastos' 
+                    ? { [Op.lt]: 0 }  // Si son gastos, importe menor que 0
+                    : { [Op.gte]: 0 } // Si son ingresos, importe mayor o igual que 0
+            }
+
+            const movimientos = await Movimiento.findAll({
+                where: whereClause,
+                order: [
+                    ['fecha', 'DESC'],
+                    ['fecha_valor', 'DESC']
+                ]
+            });
+
+            res.status(200).json({
+                success: true,
+                data: movimientos
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: error.message,
+                mensaje: 'Error al filtrar los movimientos'
             });
         }
     }

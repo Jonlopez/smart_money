@@ -9,6 +9,7 @@ import demoRouter from './src/routes/demo/demo.js';
 import appDemoRouter from './src/routes/demo/app_demo.js';
 import smartMoneyRouter from './src/routes/smart_money.js';
 import dataEntryRouter from './src/routes/data-entry.js';
+import tablasRouter from './src/routes/tablas.js';
 import appRouter from './src/routes/app.js';
 import Constantes from './src/utils/constantes.js';
 import i18n from './src/utils/i18n.js';
@@ -58,6 +59,7 @@ expressApp.use(process.env.PATH_DEMO, demoRouter);
 expressApp.use(process.env.PATH_DEMO_APP, appDemoRouter);
 expressApp.use(process.env.PATH_P, smartMoneyRouter);
 expressApp.use(process.env.PATH_P, dataEntryRouter);
+expressApp.use('/tablas', tablasRouter);
 expressApp.use(process.env.PATH_APP, appRouter);
 expressApp.use('/', languageRouter);
 
